@@ -5,6 +5,7 @@ import { exec } from '@gptscript-ai/gptscript'
 import { Tool } from '@gptscript-ai/gptscript/lib/tool'
 import { type Locator } from '@playwright/test'
 
+// browse navigates to the website and returns the text content of the page (if print is true)
 export async function browse (context: BrowserContext, website: string, sessionID: string, print: boolean): Promise<string> {
   let page: Page
   const pages = context.pages()
@@ -15,7 +16,7 @@ export async function browse (context: BrowserContext, website: string, sessionI
   }
   if (website !== '') {
     await page.goto(website)
-    await delay(5000)
+    await delay(5000) // TODO - figure out why this is here, and if it can be shortened
   }
 
   let resp: string = ''
@@ -36,13 +37,14 @@ export async function browse (context: BrowserContext, website: string, sessionI
   return resp
 }
 
+// inspect inspects a webpage and returns a locator for a specific element based on the user's input and action.
 export async function inspect (context: BrowserContext, userInput: string, action: string, keywords?: string[]): Promise<string[]> {
   const pages = context.pages()
   const page = pages[pages.length - 1]
 
   let elementData = await summarize(page, keywords ?? [], action)
   // If no data found, try to find the element without keywords first
-  if (elementData === '') {
+  if (elementData === '' && keywords == null) {
     elementData = await summarize(page, [], action)
   }
   // Scroll the page to get more data and try to find the element
@@ -61,6 +63,7 @@ export async function inspect (context: BrowserContext, userInput: string, actio
     retry++
   }
   const tool = new Tool({
+    // TODO - you can probably prompt engineer this better.
     instructions: `you are an expert in understanding web pages, playwright library and HTML elements and can help me find the information I need.
      You will be given html content and asked to find specific elements or information. 
      Based html data provided below, return the locator that can be used to locate the element using playwright library page.locator(). 
@@ -79,6 +82,7 @@ export async function inspect (context: BrowserContext, userInput: string, actio
   return [output]
 }
 
+// summarize returns relevant HTML elements for the given keywords and action
 export async function summarize (page: Page, keywords: string[], action: string): Promise<string> {
   const htmlContent = await page.content()
   const $ = cheerio.load(htmlContent)

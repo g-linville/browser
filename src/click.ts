@@ -3,6 +3,7 @@ import { delay } from './delay'
 import { getText, inspect } from './browse'
 import path from 'path'
 
+// click navigates a link or clicks on an element matching the given keywords.
 export async function click (context: BrowserContext, userInput: string, keywords: string[]): Promise<void> {
   const locators = await inspect(context, userInput, 'click', keywords)
   console.log(locators)

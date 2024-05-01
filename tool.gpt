@@ -6,7 +6,7 @@ name: browse
 description: browse website. Reuse session id from user inputs if possible.
 args: website: the website url to browse. The url should have https protocol prepend.
 args: sessionID: id of an existing session. optional but don't provide this arg unless user specifically provides one.
-args: headless: Whether to launch actual browsr. Provide true if it is specifically asked to not launch a browser. Alse provide false.
+args: headless: Whether to launch actual browser. Provide true if it is specifically asked to not launch a browser. Alse provide false.
 tools: service
 
 #!http://service.daemon.gptscript.local/browse
@@ -15,7 +15,7 @@ tools: service
 name: summarize
 description: summarize the current webpage. Reuse session id from user inputs if possible. Only use this tool if user want to know more information about the current website.
 args: sessionID: id of an existing session. optional but don't provide this arg unless user specifically provides one.
-args: headless: Whether to launch actual browsr. Provide true if it is specifically asked to not launch a browser. Alse provide false.
+args: headless: Whether to launch actual browser. Provide true if it is specifically asked to not launch a browser. Alse provide false.
 tools: service
 
 #!http://service.daemon.gptscript.local/summarize
@@ -52,7 +52,7 @@ tools: service
 
 ---
 name: enter
-description: Only invoke when user specifically ask to press certain keyboard input to the current page. Provide keyboard input into current page based on user instruction. 
+description: Only invoke when user specifically ask to press certain keyboard input to the current page. Provide keyboard input into current page based on user instruction.
 args: input: the keyboard input.
 args: sessionID: id of an existing session. optional but don't provide this arg unless user specifically provides one.
 tools: service
